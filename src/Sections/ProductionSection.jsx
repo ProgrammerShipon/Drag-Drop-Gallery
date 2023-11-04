@@ -28,7 +28,23 @@ const ProductionSection = () => {
       return !removeItem;
     });
 
+    setCheckedItems([]);
     setShowProduct(filtered);
+  };
+
+  const draggingOver = (e) => {
+    e.preventDefault();
+    console.log("Dragging Over now");
+    // console.log({ e });
+  };
+
+  const dragDropped = (e, idx) => {
+    e.preventDefault();
+    console.log("id ", e);
+    console.log("dragDropped Over now", { idx });
+    const droppedItem = JSON.parse(e.dataTransfer.getData("text/plain"));
+    const newItems = showProduct.filter((item) => item._id != droppedItem._id);
+    newItems.splice(idx, 0, droppedItem);
   };
 
   return (
@@ -36,7 +52,7 @@ const ProductionSection = () => {
       <div className="container mx-auto max-w-7xl">
         <div className=" bg-white rounded-md shadow-sm">
           {/* section Header part */}
-          <div className="border-b border-gray-400 px-8 py-3 flex justify-between items-center">
+          <div className="border-b border-[#c0c0c094] px-8 py-3 flex justify-between items-center">
             <h1 className="text-lg font-bold">
               {checkedItems?.length
                 ? `${checkedItems?.length} Files Selected`
@@ -65,6 +81,9 @@ const ProductionSection = () => {
                     idx={idx}
                     product={product}
                     toggleCheckBox={toggleCheckBox}
+                    checkedItems={checkedItems}
+                    draggingOver={draggingOver}
+                    dragDropped={dragDropped}
                   />
                 ))}
 
