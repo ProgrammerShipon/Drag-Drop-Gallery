@@ -58,16 +58,33 @@ const products = [
 
 const deletedId = [3, 5, 6];
 
-// const filtered = products.filter((product) => {
-//   console.log(product);
-
-//   return product !== deletedId;
-//   // return deletedId.map((dt) => product._id != dt);
-// });
-
 const filtered = products.filter((product) => {
   const removeItem = deletedId.includes(product._id);
   return !removeItem;
 });
 
-console.log("filtered ", filtered);
+// console.log("filtered ", filtered);
+
+//---------------------------------
+const idxObj = {
+  _id: 8,
+  name: "Item 8",
+  img: "https://i.ibb.co/4fdCCLm/image-10.jpg",
+};
+
+const DroopSort = (lists, idx, obj) => {
+  let filtered = [];
+  lists.map((list, i) => {
+    if (i == idx) {
+      filtered = [...filtered, obj, list];
+    } else {
+      if (list._id != obj._id) {
+        filtered = [...filtered, list];
+      }
+    }
+  });
+
+  return filtered;
+};
+
+console.log(DroopSort(products, 3, idxObj));

@@ -38,14 +38,30 @@ const ProductionSection = () => {
     // console.log({ e });
   };
 
-  const dragDropped = (e, idx) => {
+  const dragDropped = (e, idx, obj) => {
     e.preventDefault();
-    console.log("id ", e);
-    console.log("dragDropped Over now", { idx });
-    const droppedItem = JSON.parse(e.dataTransfer.getData("text/plain"));
-    const newItems = showProduct.filter((item) => item._id != droppedItem._id);
-    newItems.splice(idx, 0, droppedItem);
+    console.log("showProduct ", showProduct);
+    // const droppedItem = JSON.parse(e.dataTransfer.getData("text/plain"));
+    // const newItems = showProduct.filter((item) => item._id != droppedItem._id);
+    // newItems.splice(idx, 0, droppedItem);
+
+    setShowProduct(DroopSort(showProduct, idx, obj));
   };
+
+  function DroopSort(lists, idx, obj) {
+    let filtered = [];
+    lists.map((list, i) => {
+      if (i == idx) {
+        filtered = [...filtered, obj, list];
+      } else {
+        if (list._id != obj._id) {
+          filtered = [...filtered, list];
+        }
+      }
+    });
+
+    return filtered;
+  }
 
   return (
     <section className="bg-[#edf2f7] min-h-screen py-5">

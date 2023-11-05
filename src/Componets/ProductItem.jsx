@@ -1,5 +1,3 @@
-import React from "react";
-
 const ProductItem = ({
   product,
   idx,
@@ -31,7 +29,7 @@ const ProductItem = ({
         <div
           onDragStart={(e) => dragStarted(e, product)}
           onDragOver={(e) => draggingOver(e)}
-          onDrop={(e) => dragDropped(e, idx, _id)}
+          onDrop={(e) => dragDropped(e, idx, product)}
         >
           <figure>
             <img className="w-full h-full rounded-lg" src={img} alt={name} />
