@@ -5,15 +5,10 @@ const ProductItem = ({
   checkedItems,
   draggingOver,
   dragDropped,
+  dragStarted,
 }) => {
   // product destructure
   const { _id, img, name } = product;
-
-  const dragStarted = (e, item) => {
-    e.preventDefault();
-    console.log("dragStarted ", item);
-    e.dataTransfer.setData("text/plain", JSON.stringify(item));
-  };
 
   return (
     <>
@@ -21,8 +16,8 @@ const ProductItem = ({
         draggable
         className={`${
           idx == 0
-            ? "col-span-2 row-span-2 w-full h-full"
-            : " w-[14.375rem] h-[14.375rem]"
+            ? "col-span-2 row-span-3 lg:row-span-2 w-full h-full"
+            : " w-full md:w-[10.375rem] lg:w-[14.375rem] h-full md:h-[10.375rem] lg:h-[14.375rem]"
         } col-span-1 border rounded-lg cursor-pointer relative group`}
         htmlFor={`items${idx}`}
       >
