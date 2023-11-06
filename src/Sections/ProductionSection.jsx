@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProductItem from "../Componets/ProductItem";
 import useProducts from "../Hooks/useProducts";
 
@@ -6,6 +6,8 @@ const ProductionSection = () => {
   const { products } = useProducts();
   const [showProduct, setShowProduct] = useState([]);
   const [checkedItems, setCheckedItems] = useState([]);
+  const dragOverProducts = useRef(0);
+  const draggedOverProduct = useRef(0);
 
   // load data
   useEffect(() => {
@@ -32,44 +34,32 @@ const ProductionSection = () => {
     setShowProduct(filtered);
   };
 
-  const draggingOver = (e) => {
+  // drag and drop sorting
+  function handleSort() {
+    const productClone = [...showProduct];
+
+    const temp = productClone[dragOverProducts.current];
+    productClone[dragOverProducts.current] =
+      productClone[draggedOverProduct.current];
+    productClone[draggedOverProduct.current] = temp;
+
+    // set show product
+    return setShowProduct(productClone);
+  }
+
+  const DragOver = (e, idx) => {
     e.preventDefault();
-    console.log("Dragging Over now");
-    // console.log({ e });
+    console.log("overing", idx);
+    const cloneProduct = [...showProduct];
+    const temp = cloneProduct[dragOverProducts.current];
+    cloneProduct[draggedOverProduct.current] = {};
+
+    setShowProduct(cloneProduct);
+
+    // return showProduct()
+
+    console.log("cloneProduct ", { cloneProduct, temp });
   };
-
-  const dragStarted = (e, item) => {
-    e.preventDefault();
-    console.log("dragStarted ", item);
-    e.dataTransfer.setData("text/plain", JSON.stringify(item));
-  };
-
-  const dragDropped = (e, idx, obj) => {
-    e.preventDefault();
-    console.log("showProduct ", showProduct);
-    const droppedItem = JSON.parse(e.dataTransfer.getData("text/plain"));
-    const newItems = showProduct.filter((item) => item._id != droppedItem._id);
-    newItems.splice(idx, 0, droppedItem);
-
-    // setShowProduct(DroopSort(showProduct, idx, obj));
-  };
-
-  // function DroopSort(lists, idx, obj) {
-  //   let filtered = [];
-  //   lists.map((list, i) => {
-  //     if (i == idx) {
-  //       if (list._id != obj._id) {
-  //         filtered = [...filtered, obj, list];
-  //       }
-  //     } else {
-  //       if (list._id != obj._id) {
-  //         filtered = [...filtered, list];
-  //       }
-  //     }
-  //   });
-
-  //   return filtered;
-  // }
 
   return (
     <section className="bg-[#edf2f7] min-h-screen py-5 px-4">
@@ -99,7 +89,7 @@ const ProductionSection = () => {
 
           {/* section body content */}
           <div className="px-4 md:px-8 py-5 md:py-10">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 grid-flow-row-dense min-w-full">
+            <div className="grid items-center justify-between grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 grid-flow-row-dense min-w-full">
               {showProduct &&
                 showProduct.map((product, idx) => (
                   <ProductItem
@@ -108,9 +98,10 @@ const ProductionSection = () => {
                     product={product}
                     toggleCheckBox={toggleCheckBox}
                     checkedItems={checkedItems}
-                    dragStarted={dragStarted}
-                    draggingOver={draggingOver}
-                    dragDropped={dragDropped}
+                    handleSort={handleSort}
+                    dragOverProducts={dragOverProducts}
+                    draggedOverProduct={draggedOverProduct}
+                    DragOver={DragOver}
                   />
                 ))}
 

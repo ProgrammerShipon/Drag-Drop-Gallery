@@ -87,4 +87,4 @@ const DroopSort = (lists, idx, obj) => {
   return filtered;
 };
 
-console.log(DroopSort(products, 3, idxObj));
+// console.log(DroopSort(products, 3, idxObj));
